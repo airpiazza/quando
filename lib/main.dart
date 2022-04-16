@@ -84,7 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
         .child(currentUserID!)
         .onChildChanged
         .listen((event) {
-      print('data refreshed');
       loadData();
     });
   }
@@ -98,26 +97,13 @@ class _MyHomePageState extends State<MyHomePage> {
           .child("users/$currentUserID/birthdays")
           .once()
           .then((data) {
-        print("data loaded");
-        print(data);
-        print("key:");
-        print(data.snapshot.key);
-        print("value");
-        print(data.snapshot.value);
-        print('children');
         var birthdaysTempList = [];
         for (var element in data.snapshot.children) {
-          print(element.key);
-          print(element.value);
           birthdaysTempList.add(element.value);
         }
-        print("final birthday list");
 
         birthdaysTempList.sort((a, b) => a["name"].compareTo(b["name"]));
         birthdayList = birthdaysTempList;
-        for (var element in birthdayList) {
-          print(element.toString());
-        }
 
         var tempTodaysBirthdays = [];
         for (var element in birthdayList) {
@@ -135,9 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
         }
         todaysBirthdays = tempTodaysBirthdays;
 
-        print('todays birthdays');
-        print(todaysBirthdays);
-
         var tempSortedBirthdays = List.from(birthdayList);
 
         tempSortedBirthdays.sort((a, b) {
@@ -153,9 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   : 1;
         });
 
-        print('sorted birthdays');
-        print(tempSortedBirthdays);
-
         var birthdaysAfterToday = tempSortedBirthdays.where((element) {
           DateTime elementDate = DateTime.parse(element["birthdate"]);
           DateTime todayDate = _dateTime;
@@ -167,9 +147,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
           return elementDateSameYear.isAfter(todaySameYear);
         }).toList();
-
-        print('birthdays after today');
-        print(birthdaysAfterToday);
 
         var birthdaysBeforeToday = tempSortedBirthdays.where((element) {
           DateTime elementDate = DateTime.parse(element["birthdate"]);
@@ -183,17 +160,12 @@ class _MyHomePageState extends State<MyHomePage> {
           return elementDateSameYear.isBefore(todaySameYear);
         }).toList();
 
-        print('birthdays before today');
-        print(birthdaysBeforeToday);
-
         upComingBirthdays = [
           ...birthdaysAfterToday.toList(),
           ...birthdaysBeforeToday.toList()
         ];
-        print('upcoming birthdays');
-        print(upComingBirthdays);
       }).catchError((error) {
-        print(error);
+
       });
 
       // FirebaseDatabase.instance

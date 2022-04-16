@@ -57,7 +57,7 @@ class _SignInState extends State<SignIn> {
                             obscureText: true,
                             controller: passwordController,
                             decoration: InputDecoration(
-                                border: UnderlineInputBorder(),
+                                border: const UnderlineInputBorder(),
                                 labelText: 'Password',
                                 errorText: credentialsInvalid ? "Your email and password combination is invalid" : null
                             )

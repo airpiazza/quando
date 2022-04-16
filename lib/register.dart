@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
@@ -106,13 +105,7 @@ class _RegisterState extends State<Register> {
                                         email: emailController.text.toLowerCase().trim(),
                                         password: passwordController.text
                                     ).then((value) async {
-                                      String? currentUserID;
-
                                       User? currentUser = FirebaseAuth.instance.currentUser;
-
-                                      if(currentUser != null) {
-                                        currentUserID = currentUser.uid.toString();
-                                      }
 
                                       if(currentUser != null) {
                                         await currentUser.updateDisplayName(nameController.text).then((value) {
@@ -133,39 +126,6 @@ class _RegisterState extends State<Register> {
                                             Navigator.pop(context);
                                         });
                                       }
-
-                                      // await FirebaseDatabase.instance.ref().child("users/$currentUserID/info").set({
-                                      //   "name": nameController.text,
-                                      //   "email": emailController.text
-                                      // }).then((value){
-                                      //   const snackBar = SnackBar(content: Text('Registration successful!'));
-                                      //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                      // }).catchError((error){
-                                      //   const snackBar = SnackBar(content: Text('Remember to add your name and email in the settings once you sign in!'));
-                                      //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                      // });
-
-                                      // if(currentUser != null && !currentUser.emailVerified) {
-                                      //   await currentUser.sendEmailVerification().then((value) {
-                                      //     setState(() {
-                                      //       registrationLoading = false;
-                                      //     });
-                                      //
-                                      //     const snackBar = SnackBar(content: Text('Check your inbox to verify your email!'));
-                                      //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                      //
-                                      //     Navigator.pop(context);
-                                      //   }).catchError((error) {
-                                      //     setState(() {
-                                      //       registrationLoading = false;
-                                      //     });
-                                      //
-                                      //     const snackBar = SnackBar(content: Text("Looks like we couldn't send your verification email. You can try to resend it in settings."));
-                                      //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                      //
-                                      //     Navigator.pop(context);
-                                      //   });
-                                      // }
 
                                     }).catchError((error) {
                                       setState(() {

@@ -31,9 +31,11 @@ class _SettingsState extends State<Settings> {
   var currentUserDisplayName = "Name";
   var currentUserEmail = "Email";
   String? currentUserID = "";
+  User? currentUser;
 
   _SettingsState() {
     if(FirebaseAuth.instance.currentUser != null) {
+      currentUser = FirebaseAuth.instance.currentUser!;
       currentUserDisplayName = FirebaseAuth.instance.currentUser!.displayName.toString();
       currentUserEmail = FirebaseAuth.instance.currentUser!.email.toString();
     }
@@ -135,18 +137,15 @@ class _SettingsState extends State<Settings> {
                                                 flex: 46,
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    String? currentUserID;
-
-                                                    User? currentUser = FirebaseAuth.instance.currentUser;
 
                                                     if(currentUser != null) {
-                                                      currentUserID = currentUser.uid.toString();
+                                                      currentUserID = currentUser?.uid.toString();
                                                     }
 
                                                     if (_formKey.currentState!
                                                         .validate()) {
 
-                                                      await FirebaseAuth.instance.currentUser!.updateDisplayName(userNameController.text).then((value) {
+                                                      await currentUser?.updateDisplayName(userNameController.text).then((value) {
                                                         const snackBar = SnackBar(content: Text('Name successfully changed!'));
                                                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                       }).catchError((error) {
@@ -187,9 +186,6 @@ class _SettingsState extends State<Settings> {
                         },
                       ),
                       ListTile(
-                        // title: Text(userInfo.isEmpty
-                        //     ? widget.userInfo[0]["email"]
-                        //     : userInfo[0]["email"]),
                         title: Text(currentUserEmail.toString()),
                         trailing: const Icon(Icons.edit),
                         onTap: () {
@@ -266,13 +262,13 @@ class _SettingsState extends State<Settings> {
                                                     onPressed: () async {
                                                       AuthCredential emailAuthCredential = EmailAuthProvider.credential(email: newEmailUserEmailController.text, password: newEmailUserPasswordController.text);
 
-                                                      await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(emailAuthCredential).then((value) async {
+                                                      await currentUser?.reauthenticateWithCredential(emailAuthCredential).then((value) async {
                                                         setState(() {
                                                           newEmailCredentialsInvalid = false;
                                                         });
                                                         if (_formKey.currentState!
                                                             .validate()) {
-                                                          await FirebaseAuth.instance.currentUser!.updateEmail(newEmailController.text).then((value) {
+                                                          await currentUser?.updateEmail(newEmailController.text).then((value) {
                                                             const snackBar = SnackBar(content: Text('Email successfully changed!'));
                                                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
@@ -319,132 +315,6 @@ class _SettingsState extends State<Settings> {
                                     ),
                                   );
                                 });
-
-                                // return Form(
-                                //   key: _formKey,
-                                //   child: SimpleDialog(
-                                //     title: const Text("EDIT EMAIL"),
-                                //     children: [
-                                //       const Divider(),
-                                //       Padding(
-                                //         padding: const EdgeInsets.only(
-                                //             left: 16.0,
-                                //             right: 16.0,
-                                //             bottom: 4.0),
-                                //         child: TextFormField(
-                                //           controller: userEmailController,
-                                //           decoration: InputDecoration(
-                                //               border: const UnderlineInputBorder(),
-                                //               labelText: 'Email',
-                                //               errorText: credentialsInvalid ? "Your email and password combination is invalid" : null
-                                //           ),
-                                //           validator: (emailValue) {
-                                //             if (!EmailValidator.validate(
-                                //                 emailValue.toString())) {
-                                //               return 'Please enter a valid email';
-                                //             }
-                                //             return null;
-                                //           },
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //         padding: const EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                                //         child: TextFormField(
-                                //             obscureText: true,
-                                //             controller: userPasswordController,
-                                //             decoration: InputDecoration(
-                                //                 border: const UnderlineInputBorder(),
-                                //                 labelText: 'Password',
-                                //                 errorText: credentialsInvalid ? "Your email and password combination is invalid" : null
-                                //             )
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //         padding: const EdgeInsets.only(
-                                //             top: 4,
-                                //             left: 16.0,
-                                //             right: 16.0,
-                                //             bottom: 16.0),
-                                //         child: TextFormField(
-                                //           controller: newEmailController,
-                                //           decoration: const InputDecoration(
-                                //               border: UnderlineInputBorder(),
-                                //               labelText: 'New email'),
-                                //           validator: (emailValue) {
-                                //             if (!EmailValidator.validate(
-                                //                 emailValue.toString())) {
-                                //               return 'Please enter a valid email';
-                                //             }
-                                //             return null;
-                                //           },
-                                //         ),
-                                //       ),
-                                //       Padding(
-                                //           padding: const EdgeInsets.only(
-                                //               top: 16.0,
-                                //               left: 16.0,
-                                //               right: 16.0,
-                                //               bottom: 4.0),
-                                //           child: Row(
-                                //             children: [
-                                //               Expanded(
-                                //                 flex: 46,
-                                //                 child: ElevatedButton(
-                                //                   onPressed: () async {
-                                //                     // if (_formKey.currentState!
-                                //                     //     .validate()) {
-                                //                       AuthCredential emailAuthCredential = EmailAuthProvider.credential(email: userEmailController.text, password: userPasswordController.text);
-                                //
-                                //                       await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(emailAuthCredential).then((value) async {
-                                //                         setState(() {
-                                //                           credentialsInvalid = false;
-                                //                         });
-                                //
-                                //                         await FirebaseAuth.instance.currentUser!.updateEmail(newEmailController.text).then((value) {
-                                //                             const snackBar = SnackBar(content: Text('Email successfully changed!'));
-                                //                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                //
-                                //                             Navigator.pop(context);
-                                //                           }).catchError((error) async {
-                                //                             const snackBar = SnackBar(content: Text('Looks like something went wrong with changing your email.'));
-                                //                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                //                           });
-                                //                       }).catchError((error) {
-                                //                         setState(() {
-                                //                           credentialsInvalid = true;
-                                //                         });
-                                //
-                                //                         const snackBar = SnackBar(content: Text('Looks like something went wrong with authenticating you. Your email wasn\'t changed unfortunately.'));
-                                //                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                //                       });
-                                //                     // }
-                                //                   },
-                                //                   child: const Text("SAVE"),
-                                //                   style:
-                                //                       ElevatedButton.styleFrom(
-                                //                           primary: Colors.teal),
-                                //                 ),
-                                //               ),
-                                //               const Spacer(flex: 2),
-                                //               Expanded(
-                                //                 flex: 46,
-                                //                 child: ElevatedButton(
-                                //                   onPressed: () {
-                                //                     Navigator.pop(context);
-                                //                   },
-                                //                   child: const Text("CANCEL"),
-                                //                   style:
-                                //                       ElevatedButton.styleFrom(
-                                //                           primary: const Color
-                                //                                   .fromRGBO(148,
-                                //                               97, 171, 1.0)),
-                                //                 ),
-                                //               )
-                                //             ],
-                                //           ))
-                                //     ],
-                                //   ),
-                                // );
                               });
                         },
                       ),
@@ -526,13 +396,13 @@ class _SettingsState extends State<Settings> {
                                                     onPressed: () async {
                                                       AuthCredential emailAuthCredential = EmailAuthProvider.credential(email: newPasswordUserEmailController.text, password: newPasswordUserPasswordController.text);
 
-                                                      await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(emailAuthCredential).then((value) async {
+                                                      await currentUser?.reauthenticateWithCredential(emailAuthCredential).then((value) async {
                                                         setState(() {
                                                           newPasswordCredentialsInvalid = false;
                                                         });
                                                         if (_formKey.currentState!
                                                             .validate()) {
-                                                          await FirebaseAuth.instance.currentUser!.updatePassword(newPasswordController.text).then((value) {
+                                                          await currentUser?.updatePassword(newPasswordController.text).then((value) {
                                                             const snackBar = SnackBar(content: Text('Password successfully changed!'));
                                                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
@@ -692,7 +562,7 @@ class _SettingsState extends State<Settings> {
                                                               onPressed: () async {
                                                                 AuthCredential emailAuthCredential = EmailAuthProvider.credential(email: deleteAccountUserEmailController.text, password: deleteAccountUserPasswordController.text);
 
-                                                                await FirebaseAuth.instance.currentUser!.reauthenticateWithCredential(emailAuthCredential).then((value) async {
+                                                                await currentUser?.reauthenticateWithCredential(emailAuthCredential).then((value) async {
                                                                   setState(() {
                                                                     deleteAccountCredentialsInvalid = false;
                                                                   });
@@ -710,7 +580,7 @@ class _SettingsState extends State<Settings> {
                                                                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                                   });
 
-                                                                    await FirebaseAuth.instance.currentUser!.delete().then((value) {
+                                                                    await currentUser?.delete().then((value) {
                                                                       const snackBar = SnackBar(content: Text('Account successfully deleted!'));
                                                                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
@@ -778,10 +648,3 @@ class _SettingsState extends State<Settings> {
     );
   }
 }
-
-// print(userName.isEmpty
-//     ? widget.userInfo[0]["name"]
-//     : userName);
-// print(userEmail.isEmpty
-//     ? widget.userInfo[0]["email"]
-//     : userEmail);

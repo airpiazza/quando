@@ -67,14 +67,14 @@ class _BirthdayInformationState extends State<BirthdayInformation> {
                       ListTile(
                         title: Text(
                           widget.name.toUpperCase(),
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                       const Divider(),
                       ListTile(
                         title: Text(
-                            name.isEmpty || name == null ? widget.name : name),
-                        trailing: Icon(Icons.edit),
+                            name.isEmpty ? widget.name : name),
+                        trailing: const Icon(Icons.edit),
                         onTap: () {
                           showDialog(
                               barrierDismissible: false,
@@ -171,12 +171,10 @@ class _BirthdayInformationState extends State<BirthdayInformation> {
                                   firstDate: DateTime(0000, 1, 1),
                                   lastDate: DateTime.now())
                               .then((selectedBirthdate) {
-                            print(selectedBirthdate);
                             if (selectedBirthdate != null) {
                               setState(() {
                                 date = DateFormat('yyyy-MM-dd')
                                     .format(selectedBirthdate);
-                                print(date);
                               });
                             }
                           });
@@ -193,13 +191,6 @@ class _BirthdayInformationState extends State<BirthdayInformation> {
                                     setState(() {
                                       updating = true;
                                     });
-
-                                    print(name.isEmpty || name == null
-                                        ? widget.name
-                                        : name);
-                                    print(date.isEmpty || date == null
-                                        ? widget.birthDate
-                                        : date);
 
                                     if (FirebaseAuth.instance.currentUser !=
                                         null) {
@@ -320,12 +311,12 @@ class _BirthdayInformationState extends State<BirthdayInformation> {
                                                       Navigator.pop(context);
                                                     });
                                                   },
-                                                  child: Text("Yes")),
+                                                  child: const Text("Yes")),
                                               TextButton(
                                                   onPressed: () {
                                                     Navigator.pop(context);
                                                   },
-                                                  child: Text("No"))
+                                                  child: const Text("No"))
                                             ],
                                           );
                                         });
