@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quando/forgot_password.dart';
 import 'package:quando/main.dart';
 import 'package:quando/register.dart';
 
@@ -104,6 +105,20 @@ class _SignInState extends State<SignIn> {
                             ),
                           )
                         ],
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const ForgotPassword())
+                            );
+                          },
+                          child: const Text("Forgot your password?",
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Color.fromRGBO(148, 97, 171, 1.0)
+                            ),
+                          )
                       ),
                       TextButton(
                           onPressed: () {

@@ -71,11 +71,10 @@ class _MyHomePageState extends State<MyHomePage> {
   var newNameController = TextEditingController();
   var newBirthdateEntry = DateTime.now();
   var saving = false;
-  String? currentUserID;
+  String? currentUserID = "";
   var birthdayList = [];
   var todaysBirthdays = [];
   var upComingBirthdays = [];
-  var userInfo = [];
 
   _MyHomePageState() {
     loadData();
@@ -197,14 +196,14 @@ class _MyHomePageState extends State<MyHomePage> {
         print(error);
       });
 
-      FirebaseDatabase.instance
-          .ref()
-          .child("users/$currentUserID/info")
-          .once()
-          .then((data) {
-        print(data.snapshot.value);
-        userInfo.add(data.snapshot.value);
-      });
+      // FirebaseDatabase.instance
+      //     .ref()
+      //     .child("users/$currentUserID/info")
+      //     .once()
+      //     .then((data) {
+      //   print(data.snapshot.value);
+      //   userInfo = [data.snapshot.value];
+      // });
     }
   }
 
@@ -257,9 +256,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Settings(
+                      builder: (context) => const Settings(
                             title: "quando",
-                            userInfo: userInfo,
                           )));
             },
             icon: const Icon(Icons.settings),
@@ -507,6 +505,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             }).then((value) {
                                               setState(() {
                                                 saving = false;
+                                                loadData();
                                               });
 
                                               const snackBar = SnackBar(

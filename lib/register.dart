@@ -108,32 +108,65 @@ class _RegisterState extends State<Register> {
                                     ).then((value) async {
                                       String? currentUserID;
 
-                                      if(FirebaseAuth.instance.currentUser != null) {
-                                        currentUserID = FirebaseAuth.instance.currentUser?.uid.toString();
+                                      User? currentUser = FirebaseAuth.instance.currentUser;
+
+                                      if(currentUser != null) {
+                                        currentUserID = currentUser.uid.toString();
                                       }
 
-                                      await FirebaseDatabase.instance.ref().child("users/$currentUserID/info").set({
-                                        "name": nameController.text,
-                                        "email": emailController.text
-                                      }).then((value){
-                                        setState(() {
-                                          registrationLoading = false;
+                                      if(currentUser != null) {
+                                        await currentUser.updateDisplayName(nameController.text).then((value) {
+                                            const snackBar = SnackBar(content: Text('Registration successful!'));
+                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                            setState(() {
+                                              registrationLoading = false;
+                                            });
+                                            Navigator.pop(context);
+                                        }).catchError((error) {
+                                            const snackBar = SnackBar(content: Text('Remember to add your name and email in the settings once you sign in!'));
+                                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                            setState(() {
+                                              registrationLoading = false;
+                                            });
+                                            Navigator.pop(context);
                                         });
+                                      }
 
-                                        const snackBar = SnackBar(content: Text('Registration successful!'));
-                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      // await FirebaseDatabase.instance.ref().child("users/$currentUserID/info").set({
+                                      //   "name": nameController.text,
+                                      //   "email": emailController.text
+                                      // }).then((value){
+                                      //   const snackBar = SnackBar(content: Text('Registration successful!'));
+                                      //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      // }).catchError((error){
+                                      //   const snackBar = SnackBar(content: Text('Remember to add your name and email in the settings once you sign in!'));
+                                      //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      // });
 
-                                        Navigator.pop(context);
-                                      }).catchError((error){
-                                        setState(() {
-                                          registrationLoading = false;
-                                        });
+                                      // if(currentUser != null && !currentUser.emailVerified) {
+                                      //   await currentUser.sendEmailVerification().then((value) {
+                                      //     setState(() {
+                                      //       registrationLoading = false;
+                                      //     });
+                                      //
+                                      //     const snackBar = SnackBar(content: Text('Check your inbox to verify your email!'));
+                                      //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      //
+                                      //     Navigator.pop(context);
+                                      //   }).catchError((error) {
+                                      //     setState(() {
+                                      //       registrationLoading = false;
+                                      //     });
+                                      //
+                                      //     const snackBar = SnackBar(content: Text("Looks like we couldn't send your verification email. You can try to resend it in settings."));
+                                      //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      //
+                                      //     Navigator.pop(context);
+                                      //   });
+                                      // }
 
-                                        const snackBar = SnackBar(content: Text('Remember to add your name and email in the settings once you sign in!'));
-                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                                        Navigator.pop(context);
-                                      });
                                     }).catchError((error) {
                                       setState(() {
                                         registrationLoading = false;
