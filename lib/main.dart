@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.purple,
         scaffoldBackgroundColor: const Color.fromRGBO(148, 97, 171, 1.0),
+        fontFamily: 'Roboto'
       ),
       home: FirebaseAuth.instance.currentUser != null
           ? const MyHomePage(title: "quando")
@@ -168,15 +169,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }).catchError((error) {
 
       });
-
-      // FirebaseDatabase.instance
-      //     .ref()
-      //     .child("users/$currentUserID/info")
-      //     .once()
-      //     .then((data) {
-      //   print(data.snapshot.value);
-      //   userInfo = [data.snapshot.value];
-      // });
     }
   }
 
