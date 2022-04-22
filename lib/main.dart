@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.purple,
         scaffoldBackgroundColor: const Color.fromRGBO(148, 97, 171, 1.0),
+        snackBarTheme: const SnackBarThemeData(contentTextStyle: TextStyle(fontFamily: 'Roboto')),
         fontFamily: 'Roboto'
       ),
       home: FirebaseAuth.instance.currentUser != null
