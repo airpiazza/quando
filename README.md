@@ -15,4 +15,4 @@ Add all your friends' birthdays to the Quando app and never miss a friend's birt
 ## Video Walkthrough
 <img height="500px" title="Quando app walkthrough" src="walkthrough.gif" alt="Quando app walkthrough"/>
 
-Gif created using [ScreenToGif](https://www.screentogif.com/)
+Gif created using [ScreenToGif](https://www.screentogif.com/).
