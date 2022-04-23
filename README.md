@@ -4,7 +4,7 @@ Quando is an app that helps you keep track of your friends' birthdays!
 
 ## Description
 
-What if I told you, there is an app on the market that helps you remember all of your friends' birthdays.
+What if I told you, there is an app on the market that helps you remember all of your friends' birthdays!
 
 Quando shows you whose birthday it is today and whose birthdays are coming up.
 
