@@ -10,7 +10,7 @@ Quando shows you whose birthday it is today and whose birthdays are coming up.
 
 Add all your friends' birthdays to the Quando app and never miss a friend's birthday!
 
-<img height="300px" title="Quando app qr code" src="qrcode_play.google.com.png" alt="Quando app qr code"/>
+<img height="150px" title="Quando app qr code" src="qrcode_play.google.com.png" alt="Quando app qr code"/>
 
 [Google Play Store](https://play.google.com/store/apps/details?id=com.nicholaspiazza.quando)
 
